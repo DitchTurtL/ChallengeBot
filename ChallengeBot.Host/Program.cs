@@ -37,7 +37,10 @@ builder.Services
     .AddSingleton(x => new InteractionService(x.GetRequiredService<DiscordSocketClient>()))
     .AddSingleton<InteractionHandler>()
     .AddHostedService<HostedClientService>()
-    .AddSingleton<IChallengeService, ChallengeService>();
+    .AddSingleton<IChallengeService, ChallengeService>()
+    .AddSingleton<IDatabaseService, DatabaseService>()
+    .AddSingleton<IUserService, UserService>();
+    
 
 var app = builder.Build();
 

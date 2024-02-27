@@ -1,10 +1,11 @@
-﻿@page "/challenges/{id}"
+﻿@page "/challenges"
+@page "/challenges/{id:long}"
 
 <h3>Challenges</h3>
 
 @code {
     [Parameter]
-    public int Id { get; set; }
+    public long Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

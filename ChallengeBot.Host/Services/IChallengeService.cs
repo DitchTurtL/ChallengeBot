@@ -1,6 +1,8 @@
-﻿namespace ChallengeBot.Host.Services
+﻿using ChallengeBot.Host.Data;
+
+namespace ChallengeBot.Host.Services;
+
+public interface IChallengeService
 {
-    public interface IChallengeService
-    {
-    }
+    Task<string?> CreateChallengeLink(User user);
 }

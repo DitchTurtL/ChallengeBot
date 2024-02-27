@@ -1,0 +1,64 @@
+﻿@page "/edit"
+@page "/edit/{key}"
+
+@using ChallengeBot.Host.Data
+@using ChallengeBot.Host.Services
+@inject IDatabaseService DatabaseService
+
+
+
+@if (loading)
+{
+    <MudProgressCircular Indeterminate="true" />
+}
+else
+{
+    if(challenge == null)
+    {
+        <MudAlert Severity="Severity.Error">Challenge not found</MudAlert>
+    }
+    else
+    {
+        <MudContainer MaxWidth="MaxWidth.Medium">
+            <MudText Typography="Typo.h3">Edit Challenge</MudText>
+
+            <MudPaper Elevation="3" Outlined="true">
+                <MudText>Key: @Key</MudText>
+                <MudText> ID: @challenge.Id</MudText>
+                <MudForm>
+                    <MudTextField Label="Title" @bind-Value="challenge.Title" />
+                    <MudTextField Label="Description" @bind-Value="challenge.Description" />
+                    <MudTextField Label="Stub" @bind-Value="challenge.Stub" />
+                    <MudTextField Label="Content" @bind-Value="challenge.Content" />
+
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Save">Save</MudButton>
+                </MudForm>
+
+            </MudPaper>
+        </MudContainer>
+    }
+}
+
+@code {
+    [Parameter]
+    public string Key { get; set; }
+
+    private bool loading;
+    private Challenge? challenge;
+
+    protected override async Task OnInitializedAsync()
+    {
+        loading = true;
+        challenge = await DatabaseService.GetChallengeByKey(Key);
+        loading = false;
+    }
+
+    private async Task Save()
+    {
+        if (challenge == null)
+            return;
+        
+        await DatabaseService.UpdateChallenge(challenge);
+    }
+
+}
