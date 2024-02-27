@@ -4,14 +4,15 @@ using Discord.Interactions;
 using Discord.WebSocket;
 using MudBlazor.Services;
 using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Logger configuration
 var _logger = new LoggerConfiguration()
-            .WriteTo.Console()
-            .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
-            .CreateLogger();
+    .WriteTo.Console(LogEventLevel.Information)
+    .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
 // Build configuration
 var _configuration = new ConfigurationBuilder()

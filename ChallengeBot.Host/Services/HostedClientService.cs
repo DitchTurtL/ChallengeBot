@@ -1,5 +1,4 @@
-﻿
-using Discord;
+﻿using Discord;
 using Discord.WebSocket;
 
 namespace ChallengeBot.Host.Services
@@ -9,9 +8,11 @@ namespace ChallengeBot.Host.Services
         private readonly InteractionHandler _interactionHandler;
         private readonly DiscordSocketClient _client;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<HostedClientService> _logger;
 
-        public HostedClientService(IConfiguration configuration, InteractionHandler interactionHandler, DiscordSocketClient client)
+        public HostedClientService(ILogger<HostedClientService> logger, IConfiguration configuration, InteractionHandler interactionHandler, DiscordSocketClient client)
         {
+            _logger = logger;
             _configuration = configuration;
             _interactionHandler = interactionHandler;
             _client = client;
@@ -27,12 +28,18 @@ namespace ChallengeBot.Host.Services
             await _client.StartAsync();
         }
 
+        private Task LogAsync(LogMessage log)
+        {
+            _logger.LogInformation(log.Message);
+            _logger.LogWarning(log.Exception?.ToString());
+
+            return Task.CompletedTask;
+        }
+
         public Task StopAsync(CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        private static async Task LogAsync(LogMessage message)
-            => Console.WriteLine(message.ToString());
     }
 }
