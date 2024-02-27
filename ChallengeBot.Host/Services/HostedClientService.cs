@@ -19,6 +19,8 @@ namespace ChallengeBot.Host.Services
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
+            _client.Log += LogAsync;
+
             await _interactionHandler.InitializeAsync();
 
             await _client.LoginAsync(TokenType.Bot, _configuration["token"]);
@@ -29,5 +31,8 @@ namespace ChallengeBot.Host.Services
         {
             throw new NotImplementedException();
         }
+
+        private static async Task LogAsync(LogMessage message)
+            => Console.WriteLine(message.ToString());
     }
 }

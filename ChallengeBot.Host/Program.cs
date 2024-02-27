@@ -3,8 +3,15 @@ using ChallengeBot.Host.Services;
 using Discord.Interactions;
 using Discord.WebSocket;
 using MudBlazor.Services;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Logger configuration
+var _logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
+            .CreateLogger();
 
 // Build configuration
 var _configuration = new ConfigurationBuilder()
@@ -17,6 +24,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services
     .AddMudServices()
+    .AddSingleton<Serilog.ILogger>(_logger)
     .AddSingleton(_configuration)
     .AddSingleton(new DiscordSocketConfig()
     {
@@ -24,13 +32,11 @@ builder.Services
         AlwaysDownloadUsers = true
     })
     .AddSingleton<DiscordSocketClient>()
-    .AddSingleton(x => 
-        new InteractionService(x.GetRequiredService<DiscordSocketClient>(), 
-        new InteractionServiceConfig()))
-    .AddSingleton<InteractionHandler>();
+    .AddSingleton(x => new InteractionService(x.GetRequiredService<DiscordSocketClient>()))
+    .AddSingleton<InteractionHandler>()
+    .AddHostedService<HostedClientService>();
 
 var app = builder.Build();
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

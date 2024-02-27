@@ -1,4 +1,6 @@
-﻿using ChallengeBot.Host.Services;
+﻿using ChallengeBot.Host.Attributes;
+using ChallengeBot.Host.Enums;
+using ChallengeBot.Host.Services;
 using Discord;
 using Discord.Interactions;
 
