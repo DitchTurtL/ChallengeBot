@@ -44,7 +44,11 @@ public class InteractionHandler
     {
         // Register the commands globally.
         // alternatively you can use _handler.RegisterCommandsGloballyAsync() to register commands to a specific guild.
-        await _handler.RegisterCommandsGloballyAsync();
+        var guildStr = _configuration["guildId"];
+        if (ulong.TryParse(guildStr, out ulong guildId))
+            await _handler.RegisterCommandsToGuildAsync(guildId);
+        else
+            await _handler.RegisterCommandsGloballyAsync();
     }
 
     private async Task HandleInteraction(SocketInteraction interaction)
