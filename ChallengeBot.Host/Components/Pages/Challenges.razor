@@ -1,7 +1,14 @@
-﻿@page "/challenges"
+﻿@page "/challenges/{id}"
 
 <h3>Challenges</h3>
 
 @code {
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //htmlContent = await HtmlContentService.GetHtmlContentByIdAsync(Id);
+    }
 
 }

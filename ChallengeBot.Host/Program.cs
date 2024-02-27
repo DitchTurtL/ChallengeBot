@@ -23,6 +23,7 @@ var _configuration = new ConfigurationBuilder()
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
 builder.Services
     .AddMudServices()
     .AddSingleton<Serilog.ILogger>(_logger)
@@ -35,7 +36,8 @@ builder.Services
     .AddSingleton<DiscordSocketClient>()
     .AddSingleton(x => new InteractionService(x.GetRequiredService<DiscordSocketClient>()))
     .AddSingleton<InteractionHandler>()
-    .AddHostedService<HostedClientService>();
+    .AddHostedService<HostedClientService>()
+    .AddSingleton<IChallengeService, ChallengeService>();
 
 var app = builder.Build();
 
