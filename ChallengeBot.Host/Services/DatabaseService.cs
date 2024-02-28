@@ -48,15 +48,20 @@ public class DatabaseService : IDatabaseService
     {
         using var connection = new NpgsqlConnection(ConnectionString);
         challenge.UpdatedAt = DateTime.UtcNow;
-        var query = "UPDATE challenges SET title = @Title, description = @Description, stub = @Stub, content = @Content, updated_at = @UpdatedAt WHERE key = @Key";
+        var query = "UPDATE challenges SET title = @Title, description = @Description, stub = @Stub, content = @Content, active = @Active, updated_at = @UpdatedAt WHERE key = @Key";
         return await connection.ExecuteAsync(query, challenge) > 0;
-
-
-
-
-
     }
 
+    public async Task<Challenge?> GetChallengeByStubAsync(string stub)
+    {
+        using var connection = new NpgsqlConnection(ConnectionString);
+        return await connection.QueryFirstOrDefaultAsync<Challenge>("SELECT * FROM challenges WHERE stub = @Stub", new { Stub = stub });
+    }
 
+    public async Task<List<Challenge>> GetActiveChallengesAsync()
+    {
+        using var connection = new NpgsqlConnection(ConnectionString);
+        return (await connection.QueryAsync<Challenge>("SELECT * FROM challenges WHERE active = true")).ToList();
+    }
 
 }

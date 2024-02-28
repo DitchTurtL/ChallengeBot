@@ -11,4 +11,5 @@ public class Challenge
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public string Key { get; set; }
+    public bool Active { get; set; }
 }

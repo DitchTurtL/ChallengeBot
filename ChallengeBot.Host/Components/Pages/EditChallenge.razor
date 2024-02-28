@@ -6,38 +6,39 @@
 @inject IDatabaseService DatabaseService
 
 
-
-@if (loading)
-{
-    <MudProgressCircular Indeterminate="true" />
-}
-else
-{
-    if(challenge == null)
+<MudContainer MaxWidth="MaxWidth.Medium">
+    <MudText Typo="Typo.h3" Class="ma-2">Edit Challenge</MudText>
+    @if (loading)
     {
-        <MudAlert Severity="Severity.Error">Challenge not found</MudAlert>
+        <MudProgressCircular Indeterminate="true" />
     }
     else
     {
-        <MudContainer MaxWidth="MaxWidth.Medium">
-            <MudText Typography="Typo.h3">Edit Challenge</MudText>
-
-            <MudPaper Elevation="3" Outlined="true">
+        if(challenge == null)
+        {
+            <MudAlert Severity="Severity.Error">Challenge not found</MudAlert>
+        }
+        else
+        {
+            <MudPaper Elevation="3" Outlined="true" Class="pa-8">
                 <MudText>Key: @Key</MudText>
                 <MudText> ID: @challenge.Id</MudText>
-                <MudForm>
-                    <MudTextField Label="Title" @bind-Value="challenge.Title" />
-                    <MudTextField Label="Description" @bind-Value="challenge.Description" />
-                    <MudTextField Label="Stub" @bind-Value="challenge.Stub" />
-                    <MudTextField Label="Content" @bind-Value="challenge.Content" />
+                <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+                    <MudTextField T="string" Label="Title" Required="true" @bind-Value="challenge.Title" RequiredError="Title is required!" Class="ma-2"/>
+                        <MudTextField T="string" Label="Stub" Required="true" @bind-Value="challenge.Stub" RequiredError="Stub is required!" Class="ma-2" />
+                        <MudTextField T="string" Label="Description" Variant="Variant.Text" @bind-Value="challenge.Description" Lines="5" Class="ma-2" />
+                        <MudTextField T="string" Label="Content" Variant="Variant.Text" @bind-Value="challenge.Content" Lines="10" Class="ma-2" />
 
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Save">Save</MudButton>
+                    <div class="d-flex align-center justify-space-between">
+                        <MudCheckBox T="bool" Label="Active" @bind-Value="challenge.Active" />
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ma-2 ml-auto" OnClick="Save">Save</MudButton>
+                    </div>
                 </MudForm>
-
             </MudPaper>
-        </MudContainer>
+        }
     }
-}
+
+</MudContainer>
 
 @code {
     [Parameter]
@@ -45,6 +46,10 @@ else
 
     private bool loading;
     private Challenge? challenge;
+
+    MudForm form;
+    bool success;
+    string[] errors = { };
 
     protected override async Task OnInitializedAsync()
     {

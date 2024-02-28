@@ -10,5 +10,6 @@ public interface IDatabaseService
     Task<string?> CreateNewChallenge(User user);
     Task<Challenge?> GetChallengeByKey(string key);
     Task<bool> UpdateChallenge(Challenge challenge);
-
+    Task<Challenge?> GetChallengeByStubAsync(string stub);
+    Task<List<Challenge>> GetActiveChallengesAsync();
 }
