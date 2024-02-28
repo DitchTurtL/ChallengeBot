@@ -19,4 +19,10 @@ public class ChallengeService : IChallengeService
 
         return StringConstants.BASE_NEW_CHALLENGE_URL + challengeId;
     }
+
+    public async Task<List<Challenge>> GetActiveChallenges()
+    {
+        return await _databaseService.GetActiveChallengesAsync();
+    }
 }
+
