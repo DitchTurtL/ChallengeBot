@@ -1,4 +1,4 @@
-﻿using ChallengeBot.Host.Data;
+﻿using ChallengeBot.Host.Data.Models;
 using Discord.WebSocket;
 
 namespace ChallengeBot.Host.Services;

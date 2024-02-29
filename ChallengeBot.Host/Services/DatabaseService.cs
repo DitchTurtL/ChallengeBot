@@ -1,4 +1,5 @@
 ﻿using ChallengeBot.Host.Data;
+using ChallengeBot.Host.Data.Models;
 using Dapper;
 using Npgsql;
 

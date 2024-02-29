@@ -1,4 +1,4 @@
-﻿namespace ChallengeBot.Host.Data;
+﻿namespace ChallengeBot.Host.Data.Models;
 
 public class User
 {

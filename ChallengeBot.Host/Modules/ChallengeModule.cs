@@ -45,10 +45,19 @@ public class ChallengeModule : InteractionModuleBase<SocketInteractionContext>
         var channel = Context.Channel as ITextChannel;
         if (channel != null)
             await channel.SendMessageAsync(embed: embed.Build());
-
     }
 
+    [SlashCommand("submit", "Submit your challenge entry")]
+    public async Task Submit([Summary(description: "")] string repoUrl)
+    {
 
+
+
+        await RespondAsync("Submit your challenge entry here");
+    }
+
+    public async Task Echo(string echo, [Summary(description: "mention the user")] bool mention = false)
+    => await RespondAsync(echo + (mention ? Context.User.Mention : string.Empty));
 
 
 }
