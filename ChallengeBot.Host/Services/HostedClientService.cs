@@ -24,7 +24,7 @@ namespace ChallengeBot.Host.Services
 
             await _interactionHandler.InitializeAsync();
 
-            await _client.LoginAsync(TokenType.Bot, _configuration["token"]);
+            await _client.LoginAsync(TokenType.Bot, _configuration["discord_token"]);
             await _client.StartAsync();
         }
 
